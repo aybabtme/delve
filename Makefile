@@ -20,8 +20,11 @@ ALL_PACKAGES=$(shell go list ./... | grep -v /vendor/)
 # unable to execute.
 # See https://github.com/golang/go/issues/11887#issuecomment-126117692.
 ifeq "$(UNAME)" "Darwin"
-	TEST_FLAGS=-exec=$(shell pwd)/scripts/testsign
-	DARWIN="true"
+	# if not crosscompiling
+	ifeq "$(GOOS)" "" 
+		TEST_FLAGS=-exec=$(shell pwd)/scripts/testsign
+		DARWIN="true"
+	endif
 endif
 
 # If we're on OSX make sure the proper CERT env var is set.
